@@ -63,7 +63,7 @@ def create_latest_playlist(mp3_files, output_dir, limit=100):
     """按文件修改时间排序，生成最新导入的播放列表。"""
     sorted_files = sorted(mp3_files, key=os.path.getmtime, reverse=True)
     latest_tracks = sorted_files[:limit]
-    m3u_path = os.path.join(output_dir, f"Latest_{limit}.m3u")
+    m3u_path = os.path.join(output_dir, f"最新更新_{limit}.m3u")
     write_m3u(m3u_path, latest_tracks)
 
 def create_random_playlist(mp3_files, output_dir, limit=50):
@@ -74,7 +74,7 @@ def create_random_playlist(mp3_files, output_dir, limit=50):
         
     random_tracks = random.sample(mp3_files, limit)
     # 动态生成文件名，例如 Random_100.m3u
-    m3u_path = os.path.join(output_dir, f"Random_{limit}.m3u")
+    m3u_path = os.path.join(output_dir, f"随机推荐_{limit}.m3u")
     write_m3u(m3u_path, random_tracks)
 
 def create_artist_playlists(mp3_files, output_dir, top_n=None):
