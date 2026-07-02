@@ -11,10 +11,11 @@
 - 🎯 **索尼专属优化**：自动处理路径格式与文件编码，拒绝“列表为空”或“找不到文件”。
 - 📊 **音乐库统计**：一键扫描，快速查看总时长、总大小、歌手/专辑数量。
 - 🎤 **多维度生成**：
-  - `--latest`：按导入时间，生成最新 100 首。
+  - `--latest`：按导入时间，生成最新导入的播放列表（支持 `-n` 自定义数量）。
   - `--artist`：按歌手分类，支持 `-n` 截取 Top N 歌手。
   - `--album`：按专辑分类，支持 `-n` 截取 Top N 专辑。
-  - `--random`：随机抽取 50 首。
+  - `--random`：随机抽取播放列表（支持 `-n` 自定义数量）。
+- 🛡️ **999首安全护栏**：针对索尼 Walkman 硬件限制，`--latest` 和 `--random` 模式自动检测并拦截超过 999 首的请求，防止播放器无法加载。
 - 🚀 **一键部署**：`--deploy` 参数自动将生成的列表覆盖拷贝到音乐根目录，省去手动复制步骤。
 - 🛡️ **安全防错**：自动检测源文件与目标文件是否相同，避免 `SameFileError`。
 
@@ -53,9 +54,9 @@ python mp3_to_m3u.py /path/to/your/music --stats
 ------------------------------
 ```
 
-### 2. 生成最新 100 首并自动部署
+### 2. 生成最新 300 首并自动部署
 ```bash
-python mp3_to_m3u.py /path/to/your/music --latest --deploy
+python mp3_to_m3u.py /path/to/your/music --latest -n 300 --deploy
 ```
 
 ### 3. 生成 Top 10 歌手播放列表
@@ -63,9 +64,9 @@ python mp3_to_m3u.py /path/to/your/music --latest --deploy
 python mp3_to_m3u.py /path/to/your/music --artist -n 10 -o ./playlists
 ```
 
-### 4. 生成 Top 5 专辑并部署
+### 4. 随机抽取 200 首并部署
 ```bash
-python mp3_to_m3u.py /path/to/your/music --album -n 5 --deploy
+python mp3_to_m3u.py /path/to/your/music --random -n 200 --deploy
 ```
 
 ---
@@ -75,14 +76,16 @@ python mp3_to_m3u.py /path/to/your/music --album -n 5 --deploy
 | 参数 | 说明 |
 | :--- | :--- |
 | `directory` | **必填**，包含 MP3 文件的根目录路径 |
-| `--latest` | 生成最新导入的 100 首播放列表 |
+| `--latest` | 生成最新导入的播放列表 |
 | `--artist` | 按歌手生成多个播放列表 |
 | `--album` | 按专辑生成多个播放列表 |
-| `--random` | 随机生成 50 首播放列表 |
+| `--random` | 随机生成播放列表 |
 | `--stats` | 仅统计并打印音乐库信息，不生成文件 |
-| `-n N` | 配合 `--artist` 或 `--album` 使用，仅生成歌曲数最多的前 N 个 |
+| `-n N` | 配合上述四种模式使用。指定数量或截取 Top N（默认值：latest=100, random=50） |
 | `-o DIR` | 指定 M3U 文件的输出目录（默认与音乐目录相同） |
 | `--deploy` | 自动将生成的 M3U 拷贝到音乐根目录，强制覆盖同名文件 |
+
+⚠️ **硬件限制提示**：当 `--latest` 或 `--random` 配合 `-n` 使用时，若指定数量超过 999，脚本会自动将其截断为 999 并输出警告日志。
 
 ---
 
